@@ -11,6 +11,8 @@ import {
   IsString,
   IsStrongPassword,
   Matches,
+  Max,
+  Min,
 } from 'class-validator';
 import { UserRole } from 'src/user.role';
 
@@ -69,6 +71,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   @IsNumber({ allowNaN: false, allowInfinity: false })
   @IsOptional()
+  @Min(15)
+  @Max(90)
   age: number;
   @ApiProperty({
     description: 'role of the user',
@@ -88,4 +92,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsBoolean()
   @IsOptional()
   isActive: boolean = true;
+  @IsString()
+  @IsOptional()
+  refreshToken: string;
 }

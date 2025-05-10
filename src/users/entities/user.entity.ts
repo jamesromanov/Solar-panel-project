@@ -13,6 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { UserRole } from 'src/user.role';
 import { UserCreationAttrs } from '../interfaces/user.creation';
+import { Col } from 'sequelize/types/utils';
 @Table({
   tableName: 'users',
   timestamps: true,
@@ -35,10 +36,15 @@ export class User extends Model<User, UserCreationAttrs> {
   declare email: string;
   @Column({ type: DataType.STRING, allowNull: false })
   declare password: string;
-  @Column({ type: DataTypes.ENUM(UserRole.USER, UserRole.ADMIN) })
+  @Column({
+    type: DataTypes.ENUM(UserRole.USER, UserRole.ADMIN),
+    defaultValue: UserRole.USER,
+  })
   declare role: UserRole;
   @Column({ type: DataTypes.BOOLEAN, defaultValue: true })
   declare isActive: boolean;
+  @Column({ type: DataTypes.STRING })
+  declare refreshToken: string;
   @Column({ type: DataType.DATE, allowNull: true })
   declare readonly createdAt: Date;
   @Column({ type: DataType.DATE, allowNull: true })
@@ -55,7 +61,7 @@ export class User extends Model<User, UserCreationAttrs> {
   }
 
   toJSON() {
-    const { password, ...withoutPasswordData } = this.get();
+    const { password, refreshToken, ...withoutPasswordData } = this.get();
     return withoutPasswordData;
   }
 

@@ -9,4 +9,5 @@ export interface UserCreationAttrs {
   role?: UserRole;
   password: string;
   isActive?: boolean;
+  refreshToken?: string;
 }

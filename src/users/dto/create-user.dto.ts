@@ -9,6 +9,8 @@ import {
   IsString,
   IsStrongPassword,
   Matches,
+  Max,
+  Min,
 } from 'class-validator';
 import { UserRole } from 'src/user.role';
 
@@ -66,6 +68,8 @@ export class CreateUserDto {
     type: 'number',
   })
   @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Min(15)
+  @Max(90)
   @IsNotEmpty()
   age: number;
   @ApiProperty({
@@ -75,9 +79,9 @@ export class CreateUserDto {
     default: 'USER',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(UserRole)
-  role: UserRole;
+  role: UserRole = UserRole.USER;
   @ApiProperty({
     description: 'Status of the user!',
     type: 'boolean',
@@ -86,6 +90,9 @@ export class CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   isActive: boolean = true;
+  @IsString()
+  @IsOptional()
+  refreshToken: string;
   @IsOptional()
   @IsString()
   createdAt: string;

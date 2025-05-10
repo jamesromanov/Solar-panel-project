@@ -4,8 +4,13 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
+  IsStrongPassword,
+  Matches,
+  Max,
+  Min,
 } from 'class-validator';
 import { UserRole } from '../../user.role';
 
@@ -37,7 +42,36 @@ export class CreateAuthDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email!: string;
+  @ApiProperty({
+    description: 'The password of the user!',
+    type: 'string',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  @IsStrongPassword({
+    minLength: 6,
+    minLowercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+    minUppercase: 1,
+  })
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
+    message:
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
+  })
+  password!: string;
+  @ApiProperty({
+    description: 'The age of the user!',
+    default: 15,
+    type: 'number',
+  })
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @IsNotEmpty()
+  @Min(15)
+  @Max(90)
+  age: number;
   @ApiProperty({
     description: 'role of the user',
     type: 'string',
@@ -45,10 +79,9 @@ export class CreateAuthDto {
     default: 'USER',
   })
   @IsString()
-  @IsNotEmpty()
-  @IsEmail()
+  @IsOptional()
   @IsEnum(UserRole)
-  role: UserRole;
+  role: UserRole = UserRole.USER;
   @ApiProperty({
     description: 'Status of the user!',
     type: 'boolean',
@@ -57,10 +90,13 @@ export class CreateAuthDto {
   @IsBoolean()
   @IsNotEmpty()
   isActive: boolean = true;
-  @ApiProperty({ description: 'Time user registered!' })
+  @IsString()
+  @IsOptional()
+  refreshToken: string;
+  @IsOptional()
   @IsString()
   createdAt: string;
-  @ApiProperty({ description: 'Time that user updated!' })
+  @IsOptional()
   @IsString()
   updatedAt: string;
 }
