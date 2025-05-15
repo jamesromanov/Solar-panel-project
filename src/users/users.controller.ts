@@ -20,7 +20,7 @@ import {
   ApiOperation,
   ApiQuery,
 } from '@nestjs/swagger';
-import { PagenationQuery } from './interfaces/query.interface';
+import { PaginationQuery } from './interfaces/query.interface';
 import { ValidationPipe } from './Pipes/id.validtion.pipe';
 
 @Controller('users')
@@ -46,7 +46,7 @@ export class UsersController {
   @ApiQuery({ name: 'page', type: 'number', required: false })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @Get()
-  findAll(@Query() query: PagenationQuery) {
+  findAll(@Query() query: PaginationQuery) {
     return this.usersService.findAll(query);
   }
   @ApiOperation({

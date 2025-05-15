@@ -1,4 +1,4 @@
-import { Module, NotFoundException } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
@@ -8,7 +8,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
 import Redis from 'ioredis';
-import { APP_GUARD } from '@nestjs/core';
+import { RedisModule } from './redis/redis.module';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { GlobalFilter } from './filters/global.filter';
 
 @Module({
   imports: [
@@ -33,13 +35,15 @@ import { APP_GUARD } from '@nestjs/core';
     }),
     AuthModule,
     RequestsModule,
+    RedisModule,
   ],
   controllers: [],
   providers: [
     AppService,
+
     {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      provide: APP_FILTER,
+      useClass: GlobalFilter,
     },
   ],
 })

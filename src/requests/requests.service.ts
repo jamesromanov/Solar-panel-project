@@ -1,26 +1,85 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Request } from './entities/request.entity';
+import { FindOptions, Model, NumberDataType } from 'sequelize';
+import { RedisService } from 'src/redis/redis.service';
+import { PaginationQuery } from 'src/users/interfaces/query.interface';
 
 @Injectable()
 export class RequestsService {
-  create(createRequestDto: CreateRequestDto) {
-    return 'This action adds a new request';
+  constructor(
+    @InjectModel(Request) private requestModel: typeof Request,
+    private redisService: RedisService,
+  ) {}
+  async create(createRequestDto: CreateRequestDto) {
+    const request = await this.requestModel.create(createRequestDto);
+    await this.redisService.del('request:all');
+    return request;
   }
 
-  findAll() {
-    return `This action returns all requests`;
+  async findAll(query: PaginationQuery) {
+    const limit = Number(query.limit) || 10;
+    const page = Number(query.page) || 1;
+
+    const offset = (page - 1) * limit;
+    const findOptions: FindOptions = {
+      limit,
+      offset,
+    };
+    const requestsAll = await this.redisService.get(`requests:page:${page}`);
+    const requestsAllCount = await this.redisService.get(`requests:total`);
+
+    let requests: any[];
+    let requestCount: number;
+
+    const { rows: totalRequests, count: totalRequestsCount } =
+      await this.requestModel.findAndCountAll({
+        ...findOptions,
+        where: { ...findOptions.where, active: true },
+      });
+
+    if (requestsAllCount && requestsAll) {
+      requests = JSON.parse(requestsAll);
+      requestCount = +requestsAllCount;
+    } else {
+      requests = totalRequests;
+      requestCount = totalRequestsCount;
+    }
+
+    if (totalRequests.length > 0 && totalRequestsCount >= 1) {
+      await this.redisService.set(`requests:page:${page}`, totalRequests, 60);
+      await this.redisService.set(`requests:total`, totalRequestsCount, 60);
+    }
+    const totalPages = Math.ceil(requestCount / limit);
+
+    return {
+      totalPages,
+      totalRequests: requestCount,
+      hasNextPage: page < totalPages,
+      currentPage: page,
+      requests,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} request`;
+  async findOne(id: number) {
+    if (id < 1 || isNaN(id)) throw new BadRequestException('Invalid id!');
+    const request = await this.requestModel.findByPk(id);
+    if (!request) throw new NotFoundException('Request not found!');
+    return request;
   }
 
-  update(id: number, updateRequestDto: UpdateRequestDto) {
+  async update(id: number, updateRequestDto: UpdateRequestDto) {
     return `This action updates a #${id} request`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} request`;
   }
 }

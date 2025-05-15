@@ -57,7 +57,7 @@ export class AuthService {
       });
       return { accessToken };
     } catch (error) {
-      throw new UnauthorizedException(error.message);
+      throw new UnauthorizedException();
     }
   }
   async logout(req: Request, res: Response) {
@@ -72,7 +72,7 @@ export class AuthService {
       if (user.id !== validation.id)
         throw new UnauthorizedException('Token is invalid!');
 
-      user.refreshToken = '';
+      user.refreshToken = null;
       await user.save({ hooks: true });
       res.clearCookie('jwt', {
         maxAge: parseInt('604800000'),

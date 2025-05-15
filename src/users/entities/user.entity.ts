@@ -7,13 +7,14 @@ import {
   BeforeUpdate,
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { UserRole } from 'src/user.role';
 import { UserCreationAttrs } from '../interfaces/user.creation';
-import { Col } from 'sequelize/types/utils';
+import { Request } from 'src/requests/entities/request.entity';
 @Table({
   tableName: 'users',
   timestamps: true,
@@ -49,6 +50,8 @@ export class User extends Model<User, UserCreationAttrs> {
   declare readonly createdAt: Date;
   @Column({ type: DataType.DATE, allowNull: true })
   declare readonly updatedAt: Date;
+  @HasMany(() => Request)
+  requests: Request[];
 
   @BeforeCreate
   @BeforeUpdate
