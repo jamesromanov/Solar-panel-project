@@ -53,6 +53,11 @@ export class CreateRequestDto {
   @IsString()
   @IsOptional()
   message: string;
+  @ApiProperty({
+    type: 'boolean',
+    description: 'Status of the user!',
+    example: 'true',
+  })
   @IsBoolean()
   active: boolean = true;
 }

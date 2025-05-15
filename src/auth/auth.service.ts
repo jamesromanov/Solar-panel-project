@@ -57,7 +57,7 @@ export class AuthService {
       });
       return { accessToken };
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(error.message);
     }
   }
   async logout(req: Request, res: Response) {

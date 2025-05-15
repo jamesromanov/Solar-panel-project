@@ -1,16 +1,17 @@
 import {
   BadRequestException,
+  HttpStatus,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Request } from './entities/request.entity';
-import { FindOptions, Model, NumberDataType } from 'sequelize';
+import { FindOptions } from 'sequelize';
 import { RedisService } from 'src/redis/redis.service';
 import { PaginationQuery } from 'src/users/interfaces/query.interface';
+import { Response } from 'express';
 
 @Injectable()
 export class RequestsService {
@@ -76,10 +77,20 @@ export class RequestsService {
   }
 
   async update(id: number, updateRequestDto: UpdateRequestDto) {
-    return `This action updates a #${id} request`;
+    if (id < 1 || isNaN(id)) throw new BadRequestException('Invalid id.');
+    const request = await this.requestModel.findByPk(id);
+    if (request) return await request.update({ ...updateRequestDto });
+    else throw new NotFoundException('Request not found.');
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} request`;
+  async remove(id: number, res: Response) {
+    if (id < 1 || isNaN(id)) throw new BadRequestException('Invalid id');
+    const request = await this.requestModel.findByPk(id);
+    if (request) {
+      await request.update({ active: false });
+      return res.status(HttpStatus.NO_CONTENT).json(null);
+    } else {
+      throw new NotFoundException('Request not found');
+    }
   }
 }

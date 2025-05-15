@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Res,
 } from '@nestjs/common';
 import { RequestsService } from './requests.service';
 import { CreateRequestDto } from './dto/create-request.dto';
@@ -21,6 +22,7 @@ import {
   ApiOperation,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Response } from 'express';
 
 @Controller('requests')
 export class RequestsController {
@@ -81,7 +83,7 @@ export class RequestsController {
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.requestsService.remove(+id);
+  remove(@Param('id') id: string, @Res() res: Response) {
+    return this.requestsService.remove(+id, res);
   }
 }
