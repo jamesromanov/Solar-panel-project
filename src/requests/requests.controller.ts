@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { RequestsService } from './requests.service';
 import { CreateRequestDto } from './dto/create-request.dto';
@@ -59,8 +60,8 @@ export class RequestsController {
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.requestsService.findOne(+id);
+  findOne(@Param('id', ValidationPipe) id: number) {
+    return this.requestsService.findOne(id);
   }
 
   @ApiOperation({
@@ -71,8 +72,11 @@ export class RequestsController {
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto) {
-    return this.requestsService.update(+id, updateRequestDto);
+  update(
+    @Param('id', ValidationPipe) id: number,
+    @Body() updateRequestDto: UpdateRequestDto,
+  ) {
+    return this.requestsService.update(id, updateRequestDto);
   }
 
   @ApiOperation({
@@ -83,7 +87,7 @@ export class RequestsController {
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @Delete(':id')
-  remove(@Param('id') id: string, @Res() res: Response) {
-    return this.requestsService.remove(+id, res);
+  remove(@Param('id', ValidationPipe) id: number, @Res() res: Response) {
+    return this.requestsService.remove(id, res);
   }
 }
