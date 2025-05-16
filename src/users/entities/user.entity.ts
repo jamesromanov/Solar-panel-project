@@ -52,7 +52,6 @@ export class User extends Model<User, UserCreationAttrs> {
   declare readonly updatedAt: Date;
   @HasMany(() => Request)
   requests: Request[];
-
   @BeforeCreate
   @BeforeUpdate
   static async hashPassword(user: User) {

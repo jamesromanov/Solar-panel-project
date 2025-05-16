@@ -12,12 +12,14 @@ import { FindOptions } from 'sequelize';
 import { RedisService } from 'src/redis/redis.service';
 import { PaginationQuery } from 'src/users/interfaces/query.interface';
 import { Response } from 'express';
+import { DatabaseLogger } from 'src/auth/logger.service';
 
 @Injectable()
 export class RequestsService {
   constructor(
     @InjectModel(Request) private requestModel: typeof Request,
     private redisService: RedisService,
+    private logger: DatabaseLogger,
   ) {}
   async create(createRequestDto: CreateRequestDto) {
     const request = await this.requestModel.create(createRequestDto);
@@ -71,16 +73,22 @@ export class RequestsService {
 
   async findOne(id: number) {
     if (id < 1 || isNaN(id)) throw new BadRequestException('Invalid id!');
+    const cacheRequest = await this.redisService.get(`request:id:${id}`);
+    if (cacheRequest) return JSON.parse(cacheRequest);
     const request = await this.requestModel.findByPk(id);
     if (!request) throw new NotFoundException('Request not found!');
+    await this.redisService.set(`request:id:${id}`, request, 60);
     return request;
   }
 
   async update(id: number, updateRequestDto: UpdateRequestDto) {
     if (id < 1 || isNaN(id)) throw new BadRequestException('Invalid id.');
     const request = await this.requestModel.findByPk(id);
-    if (request) return await request.update({ ...updateRequestDto });
-    else throw new NotFoundException('Request not found.');
+    if (request) {
+      await request.update({ ...updateRequestDto });
+      await this.redisService.del(`request:id:${id}`);
+      return request;
+    } else throw new NotFoundException('Request not found.');
   }
 
   async remove(id: number, res: Response) {
@@ -88,6 +96,7 @@ export class RequestsService {
     const request = await this.requestModel.findByPk(id);
     if (request) {
       await request.update({ active: false });
+      await this.redisService.del(`request:id:${id}`);
       return res.status(HttpStatus.NO_CONTENT).json(null);
     } else {
       throw new NotFoundException('Request not found');

@@ -11,6 +11,7 @@ import Redis from 'ioredis';
 import { RedisModule } from './redis/redis.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { GlobalFilter } from './filters/global.filter';
+import { DatabaseLogger } from './auth/logger.service';
 
 @Module({
   imports: [
@@ -40,7 +41,10 @@ import { GlobalFilter } from './filters/global.filter';
   controllers: [],
   providers: [
     AppService,
-
+    // {
+    //   provide: APP_LOGGER,
+    //   useClass: DatabaseLogger,
+    // },
     {
       provide: APP_FILTER,
       useClass: GlobalFilter,
