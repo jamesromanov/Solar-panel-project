@@ -76,11 +76,7 @@ __decorate([
         minUppercase: 1,
     }),
     (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
-<<<<<<< HEAD
-        message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number.',
-=======
         message: 'Password must contain at least one uppercase letter, one lowercase letter, one number and one symbol.',
->>>>>>> e66bc828 (finished project added roles guard)
     }),
     __metadata("design:type", String)
 ], CreateAuthDto.prototype, "password", void 0);

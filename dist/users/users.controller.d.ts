@@ -2,10 +2,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationQuery } from './interfaces/query.interface';
-<<<<<<< HEAD
-=======
 import { UserRole } from 'src/user.role';
->>>>>>> e66bc828 (finished project added roles guard)
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -15,11 +12,7 @@ export declare class UsersController {
         lastName: string;
         age: number;
         email: string;
-<<<<<<< HEAD
-        role: import("../user.role").UserRole;
-=======
         role: UserRole;
->>>>>>> e66bc828 (finished project added roles guard)
         isActive: boolean;
         createdAt: Date;
         updatedAt: Date;

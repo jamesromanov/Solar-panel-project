@@ -20,13 +20,10 @@ const update_user_dto_1 = require("./dto/update-user.dto");
 const swagger_1 = require("@nestjs/swagger");
 const query_interface_1 = require("./interfaces/query.interface");
 const id_validtion_pipe_1 = require("./Pipes/id.validtion.pipe");
-<<<<<<< HEAD
-=======
 const auth_guard_1 = require("../guards/auth.guard");
 const role_guard_1 = require("../auth/rolesguard/role.guard");
 const roles_decorator_1 = require("../auth/rolesguard/roles.decorator");
 const user_role_1 = require("../user.role");
->>>>>>> e66bc828 (finished project added roles guard)
 let UsersController = class UsersController {
     usersService;
     constructor(usersService) {
@@ -122,12 +119,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "remove", null);
 exports.UsersController = UsersController = __decorate([
-<<<<<<< HEAD
-=======
     (0, swagger_1.ApiBearerAuth)(),
     (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
->>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);

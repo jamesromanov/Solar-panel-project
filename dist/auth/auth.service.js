@@ -53,13 +53,8 @@ let AuthService = class AuthService {
                 throw new common_1.UnauthorizedException('Token is invalid!');
             const payload = { id: user.id, role: user.role };
             const accessToken = await this.jwtService.signAsync(payload, {
-<<<<<<< HEAD
-                secret: process.env.REFRESH_TOKEN_KEY,
-                expiresIn: process.env.REFRESH_TOKEN_EXP,
-=======
                 secret: process.env.ACCESS_TOKEN_KEY,
                 expiresIn: process.env.ACCESS_TOKEN_EXP,
->>>>>>> e66bc828 (finished project added roles guard)
             });
             return { accessToken };
         }

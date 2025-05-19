@@ -1,14 +1,4 @@
 "use strict";
-<<<<<<< HEAD
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthGuard = void 0;
-class AuthGuard {
-    canActivate(context) {
-        return true;
-    }
-}
-exports.AuthGuard = AuthGuard;
-=======
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -57,5 +47,4 @@ exports.AuthGuard = AuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService])
 ], AuthGuard);
->>>>>>> e66bc828 (finished project added roles guard)
 //# sourceMappingURL=auth.guard.js.map

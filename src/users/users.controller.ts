@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
@@ -22,7 +24,14 @@ import {
 } from '@nestjs/swagger';
 import { PaginationQuery } from './interfaces/query.interface';
 import { ValidationPipe } from './Pipes/id.validtion.pipe';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/auth/rolesguard/role.guard';
+import { Roles } from 'src/auth/rolesguard/roles.decorator';
+import { UserRole } from 'src/user.role';
 
+@ApiBearerAuth()
+@Roles(UserRole.ADMIN)
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
