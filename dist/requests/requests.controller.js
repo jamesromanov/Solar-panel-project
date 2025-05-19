@@ -19,6 +19,13 @@ const create_request_dto_1 = require("./dto/create-request.dto");
 const update_request_dto_1 = require("./dto/update-request.dto");
 const query_interface_1 = require("../users/interfaces/query.interface");
 const swagger_1 = require("@nestjs/swagger");
+<<<<<<< HEAD
+=======
+const auth_guard_1 = require("../guards/auth.guard");
+const role_guard_1 = require("../auth/rolesguard/role.guard");
+const roles_decorator_1 = require("../auth/rolesguard/roles.decorator");
+const user_role_1 = require("../user.role");
+>>>>>>> e66bc828 (finished project added roles guard)
 let RequestsController = class RequestsController {
     requestsService;
     constructor(requestsService) {
@@ -49,6 +56,10 @@ __decorate([
     (0, swagger_1.ApiCreatedResponse)({ description: 'Successfully added!' }),
     (0, swagger_1.ApiBadRequestResponse)({ description: 'Invalid data entered!' }),
     (0, swagger_1.ApiInternalServerErrorResponse)({ description: 'Internal server error!' }),
+<<<<<<< HEAD
+=======
+    (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN, user_role_1.UserRole.USER),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -65,6 +76,10 @@ __decorate([
     (0, swagger_1.ApiInternalServerErrorResponse)({ description: 'Internal server error!' }),
     (0, swagger_1.ApiQuery)({ name: 'limit', type: 'number' }),
     (0, swagger_1.ApiQuery)({ name: 'page', type: 'number' }),
+<<<<<<< HEAD
+=======
+    (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -79,6 +94,10 @@ __decorate([
     (0, swagger_1.ApiOkResponse)({ description: 'Successfully returned!' }),
     (0, swagger_1.ApiBadRequestResponse)({ description: 'Invalid data entered!' }),
     (0, swagger_1.ApiInternalServerErrorResponse)({ description: 'Internal server error!' }),
+<<<<<<< HEAD
+=======
+    (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN, user_role_1.UserRole.USER),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ValidationPipe)),
     __metadata("design:type", Function),
@@ -93,6 +112,10 @@ __decorate([
     (0, swagger_1.ApiOkResponse)({ description: 'Successfully updated!' }),
     (0, swagger_1.ApiBadRequestResponse)({ description: 'Invalid data entered!' }),
     (0, swagger_1.ApiInternalServerErrorResponse)({ description: 'Internal server error!' }),
+<<<<<<< HEAD
+=======
+    (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN, user_role_1.UserRole.USER),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ValidationPipe)),
     __param(1, (0, common_1.Body)()),
@@ -108,6 +131,10 @@ __decorate([
     (0, swagger_1.ApiNoContentResponse)({ description: 'Successfully deleted!' }),
     (0, swagger_1.ApiBadRequestResponse)({ description: 'Invalid data entered!' }),
     (0, swagger_1.ApiInternalServerErrorResponse)({ description: 'Internal server error!' }),
+<<<<<<< HEAD
+=======
+    (0, roles_decorator_1.Roles)(user_role_1.UserRole.ADMIN, user_role_1.UserRole.USER),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ValidationPipe)),
     __param(1, (0, common_1.Res)()),
@@ -116,6 +143,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], RequestsController.prototype, "remove", null);
 exports.RequestsController = RequestsController = __decorate([
+<<<<<<< HEAD
+=======
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, role_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+>>>>>>> e66bc828 (finished project added roles guard)
     (0, common_1.Controller)('requests'),
     __metadata("design:paramtypes", [requests_service_1.RequestsService])
 ], RequestsController);

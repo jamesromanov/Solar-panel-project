@@ -138,6 +138,10 @@ let UsersService = class UsersService {
         if (!user)
             throw new common_1.NotFoundException('User not found!');
         user.isActive = false;
+<<<<<<< HEAD
+=======
+        await this.redisService.del(`users:id:${id}`);
+>>>>>>> e66bc828 (finished project added roles guard)
         await user.save({ hooks: true });
         return 'Successfully deleted!';
     }
