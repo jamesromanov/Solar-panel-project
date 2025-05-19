@@ -8,7 +8,6 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { UserRole } from 'src/user.role';
 import { ROLES_KEY } from './roles.decorator';
-import { UnknownConstraintError } from 'sequelize';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

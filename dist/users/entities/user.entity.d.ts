@@ -1,0 +1,40 @@
+import { Model } from 'sequelize-typescript';
+import { UserRole } from 'src/user.role';
+import { UserCreationAttrs } from '../interfaces/user.creation';
+import { Request } from 'src/requests/entities/request.entity';
+export declare class User extends Model<User, UserCreationAttrs> {
+    readonly id: number;
+    firstName: string;
+    lastName: string;
+    age: number;
+    email: string;
+    password: string;
+    role: UserRole;
+    isActive: boolean;
+    refreshToken: string;
+    readonly createdAt: Date;
+    readonly updatedAt: Date;
+    requests: Request[];
+    static hashPassword(user: User): Promise<void>;
+    toJSON(): {
+        id: number;
+        firstName: string;
+        lastName: string;
+        age: number;
+        email: string;
+        role: UserRole;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        requests: Request[];
+        deletedAt?: Date | any;
+        version?: number | any;
+        _attributes: User;
+        dataValues: User;
+        _creationAttributes: UserCreationAttrs;
+        isNewRecord: boolean;
+        sequelize: import("sequelize").Sequelize;
+        _model: import("sequelize").Model<User, UserCreationAttrs>;
+    };
+    comparePassword(plainText: string): Promise<boolean>;
+}
