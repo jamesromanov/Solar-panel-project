@@ -9,6 +9,7 @@ import {
   Query,
   Res,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { RequestsService } from './requests.service';
 import { CreateRequestDto } from './dto/create-request.dto';
@@ -24,7 +25,9 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { Response } from 'express';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
