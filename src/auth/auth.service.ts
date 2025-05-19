@@ -52,8 +52,8 @@ export class AuthService {
 
       const payload = { id: user.id, role: user.role };
       const accessToken = await this.jwtService.signAsync(payload, {
-        secret: process.env.REFRESH_TOKEN_KEY,
-        expiresIn: process.env.REFRESH_TOKEN_EXP,
+        secret: process.env.ACCESS_TOKEN_KEY,
+        expiresIn: process.env.ACCESS_TOKEN_EXP,
       });
       return { accessToken };
     } catch (error) {

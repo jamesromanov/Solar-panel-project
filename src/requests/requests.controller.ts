@@ -17,6 +17,7 @@ import { UpdateRequestDto } from './dto/update-request.dto';
 import { PaginationQuery } from 'src/users/interfaces/query.interface';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
@@ -26,8 +27,12 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/auth/rolesguard/role.guard';
+import { Roles } from 'src/auth/rolesguard/roles.decorator';
+import { UserRole } from 'src/user.role';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
+@ApiBearerAuth()
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
@@ -38,6 +43,7 @@ export class RequestsController {
   @ApiCreatedResponse({ description: 'Successfully added!' })
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Post()
   create(@Body() createRequestDto: CreateRequestDto) {
     return this.requestsService.create(createRequestDto);
@@ -51,6 +57,7 @@ export class RequestsController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
   @ApiQuery({ name: 'limit', type: 'number' })
   @ApiQuery({ name: 'page', type: 'number' })
+  @Roles(UserRole.ADMIN)
   @Get()
   findAll(@Query() query: PaginationQuery) {
     return this.requestsService.findAll(query);
@@ -62,6 +69,7 @@ export class RequestsController {
   @ApiOkResponse({ description: 'Successfully returned!' })
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Get(':id')
   findOne(@Param('id', ValidationPipe) id: number) {
     return this.requestsService.findOne(id);
@@ -74,6 +82,7 @@ export class RequestsController {
   @ApiOkResponse({ description: 'Successfully updated!' })
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Patch(':id')
   update(
     @Param('id', ValidationPipe) id: number,
@@ -89,6 +98,7 @@ export class RequestsController {
   @ApiNoContentResponse({ description: 'Successfully deleted!' })
   @ApiBadRequestResponse({ description: 'Invalid data entered!' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error!' })
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Delete(':id')
   remove(@Param('id', ValidationPipe) id: number, @Res() res: Response) {
     return this.requestsService.remove(id, res);

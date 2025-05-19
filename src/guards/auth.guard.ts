@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException("Couldn't get the token!");
 
     try {
-      const payload = await this.jwtService.verify(token, {
+      const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.ACCESS_TOKEN_KEY,
       });
       request['user'] = {
@@ -26,10 +26,11 @@ export class AuthGuard implements CanActivate {
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
-    return false;
+    return true;
   }
   private extractTokenFromHeader(request: any) {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    console.log(type === 'Bearer' ? token : undefined);
     return type === 'Bearer' ? token : undefined;
   }
 }

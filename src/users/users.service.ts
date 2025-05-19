@@ -137,6 +137,7 @@ export class UsersService {
     });
     if (!user) throw new NotFoundException('User not found!');
     user.isActive = false;
+    await this.redisService.del(`users:id:${id}`);
     await user.save({ hooks: true });
     return 'Successfully deleted!';
   }
