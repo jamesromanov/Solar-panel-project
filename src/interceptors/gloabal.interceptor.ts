@@ -13,11 +13,7 @@ export class GlobaIntereptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> {
-    // console.log(context, 'context checking !');
-    console.log('Before...');
     const now = Date.now();
-    return next
-      .handle()
-      .pipe(tap(() => console.log(`After... ${Date.now() - now}ms`)));
+    return next.handle().pipe(tap(() => `After... ${Date.now() - now}ms`));
   }
 }

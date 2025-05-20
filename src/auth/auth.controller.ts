@@ -10,6 +10,8 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
+@Throttle({ default: { ttl: 1000 * 60, limit: 3 } })
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

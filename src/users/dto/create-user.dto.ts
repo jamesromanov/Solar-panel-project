@@ -100,12 +100,3 @@ export class CreateUserDto {
   @IsString()
   updatedAt: string;
 }
-
-// "id" BIGSERIAL NOT NULL UNIQUE,
-// 	"first_name" VARCHAR(255),
-// 	"last_name" VARCHAR(255),
-// 	"email" VARCHAR(255) NOT NULL,
-// 	"role" ROLES DEFAULT 'USER',
-// 	"isActive" BOOLEAN DEFAULT true,
-// 	"createdAt" TIMESTAMP DEFAULT current_timestamp,
-// 	"uodated_At" TIMESTAMP,

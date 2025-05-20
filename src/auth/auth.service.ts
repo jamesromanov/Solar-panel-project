@@ -66,7 +66,6 @@ export class AuthService {
       const validation = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.REFRESH_TOKEN_KEY,
       });
-      console.log(validation.id);
 
       const user = await this.userSerivce.findByToken(refreshToken);
       if (user.id !== validation.id)

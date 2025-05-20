@@ -18,7 +18,7 @@ import { DatabaseLogger } from './auth/logger.service';
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     ThrottlerModule.forRoot({
-      throttlers: [{ ttl: 1000 * 60, limit: 4 }],
+      throttlers: [{ ttl: 1000 * 60, limit: 5 }],
       storage: new ThrottlerStorageRedisService(
         new Redis({
           port: Number(process.env.REDIS_PORT) || 6379,
@@ -48,6 +48,10 @@ import { DatabaseLogger } from './auth/logger.service';
     {
       provide: APP_FILTER,
       useClass: GlobalFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

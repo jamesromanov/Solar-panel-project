@@ -11,11 +11,8 @@ const common_1 = require("@nestjs/common");
 const operators_1 = require("rxjs/operators");
 let GlobaIntereptor = class GlobaIntereptor {
     intercept(context, next) {
-        console.log('Before...');
         const now = Date.now();
-        return next
-            .handle()
-            .pipe((0, operators_1.tap)(() => console.log(`After... ${Date.now() - now}ms`)));
+        return next.handle().pipe((0, operators_1.tap)(() => `After... ${Date.now() - now}ms`));
     }
 };
 exports.GlobaIntereptor = GlobaIntereptor;

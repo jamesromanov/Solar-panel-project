@@ -1,6 +1,4 @@
 import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { LegacyESLint } from 'eslint/use-at-your-own-risk';
-import e from 'express';
 import Redis from 'ioredis';
 
 @Injectable()

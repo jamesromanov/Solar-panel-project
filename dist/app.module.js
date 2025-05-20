@@ -29,7 +29,7 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             users_module_1.UsersModule,
             throttler_1.ThrottlerModule.forRoot({
-                throttlers: [{ ttl: 1000 * 60, limit: 4 }],
+                throttlers: [{ ttl: 1000 * 60, limit: 5 }],
                 storage: new throttler_storage_redis_1.ThrottlerStorageRedisService(new ioredis_1.default({
                     port: Number(process.env.REDIS_PORT) || 6379,
                     host: process.env.REDIS_HOST,
@@ -53,6 +53,10 @@ exports.AppModule = AppModule = __decorate([
             {
                 provide: core_1.APP_FILTER,
                 useClass: global_filter_1.GlobalFilter,
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: throttler_1.ThrottlerGuard,
             },
         ],
     })
