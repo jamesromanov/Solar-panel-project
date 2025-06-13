@@ -1,7 +1,6 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { log } from 'console';
-import { string } from 'joi';
 import { Log } from 'src/entity/logger.entity';
 
 @Injectable({
